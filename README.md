@@ -1,6 +1,8 @@
 Overview of the client - radio station - https://www.dublab.com/schedule/102896/dublab-presents-the-sounds-ofnow-21 
 
     - Goal is that website to be powered by google calendar api
+    - This public version will not have the tokens or credentials for security purposes
+    - The output of my production code can be found here: https://euphonious-ganache-ff3704.netlify.app/.netlify/functions/api_call_netlify
 
 Business ask:
 
