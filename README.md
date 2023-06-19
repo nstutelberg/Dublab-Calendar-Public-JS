@@ -44,5 +44,5 @@ Dublab Calendar
 
 Work in progress: 
 1. Update the error handling to be more robust once I see some of the common errors that can be thrown
-2. Implement a logging system if it is required down the lien
+2. Implement a logging system if it is required down the line
 3. Store the credentials in a safer way vs storing them in a token.json file
