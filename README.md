@@ -1,9 +1,8 @@
-Overview of the client - radio station - https://www.dublab.com/schedule/102896/dublab-presents-the-sounds-ofnow-21 
+Overview of the client - radio station - https://www.dublab.com/schedule - prod output - https://euphonious-ganache-ff3704.netlify.app/.netlify/functions/api_call_netlify
 
-    - Goal is that website to be powered by google calendar api
-    - This public version will not have the tokens or credentials for security purposes
-    - The output of my production code can be found here: https://euphonious-ganache-ff3704.netlify.app/.netlify/functions/api_call_netlify
-
+- Goal is for the scheduling backend to be powered by google calendar api vs the wordpress system they have now. This code is meant to integrate with the calendar they produce and display events on this /schedule page
+- This public version will not have the tokens or credentials for security purposes, but the prod output is still viewable even though this repo will not function
+    
 Business ask:
 
 1.  They want to post calendar events, and they usually recur but not always
@@ -44,5 +43,6 @@ Dublab Calendar
 
 
 Work in progress: 
-1. do better error handling to throw/catch errors vs just logging them
-2. Store the credentials in a safer way vs storing them in a token.json file
+1. Update the error handling to be more robust once I see some of the common errors that can be thrown
+2. Implement a logging system if it is required down the line
+3. Store the credentials in a safer way vs storing them in a token.json file
