@@ -1,13 +1,24 @@
 // Loading in packages, the credentials file, and the token file
 var dotenv = require('dotenv');
 var myEnv = dotenv.config();
-const credentials = require('../config/credentials.json')
-const token = require('../config/token.json')
+const fs = require('fs');
 const { convertDriveLinkToDirectImageLink } = require('./attachments_parsing.js')
 const moment = require('moment-timezone');
+const { parseEventTitle } = require('./event_title_parsing.js')
 
 // Loading in the google object from googleapis, so we can access its methods
 const { google } = require('googleapis');
+
+// Functionality below is checking if credentials already exists, and if it does, don't load credentials again. this makes it so the credentials are only loaded once and are retained on subsequent calls
+let credentials;
+if (!credentials) {
+    credentials = require('../config/credentials.json')
+}
+
+let token;
+if (!token) {
+    token = require('../config/token.json')
+}
 
 // Creating the OAuth client
 const oAuthClient = new google.auth.OAuth2(
@@ -21,15 +32,12 @@ oAuthClient.setCredentials(token);
 const calendar = google.calendar({ version: "v3", auth: oAuthClient });
 const calendarId = process.env.CALENDAR_ID
 
-
 // Retrieving all events from the calendar
 async function getCalendarEvents(numDays = 7) {
-
     try {
 
         // Get the current date and time in Pacific Time (Los Angeles). 
         const timezone = 'America/Los_Angeles';
-        const numDays = 7
         const now = moment().tz(timezone);
 
         // Get today's date and set it at the beginning of the day. The clone method creates a copy of the moment object so that the timezone stays in Los Angeles
@@ -61,13 +69,19 @@ async function getCalendarEvents(numDays = 7) {
                 const description = event.description
 
                 // Specifying the case when there are no attachments. Return the attachment if it is present, else return undefined
-                const attachments = event.attachments ? event.attachments.map(attachment => attachment.fileUrl) : undefined;
+                const attachments = event.attachments ? event.attachments.map(attachment => attachment.fileUrl) : '';
+
+                // Functionality to make the url link accessible to the frontend
                 const attachmentsDirectLink = convertDriveLinkToDirectImageLink(attachments);
+
+                // Parsing out the summary field into its own object with 3 values contained within it
+                const summaryParsed = parseEventTitle(summary)
 
                 // Setting up the structure of the JSON so it can be pushed when the HTTP request is triggered
                 const calendarOutput = {
                     startTime: startTime,
                     summary: summary,
+                    eventTitleMeta: summaryParsed,
                     description: description,
                     attachments: attachmentsDirectLink
                 };
@@ -80,7 +94,6 @@ async function getCalendarEvents(numDays = 7) {
         }
 
         // Converting jsonData to the final JSON format
-        const jsonDataFormatted = JSON.stringify(jsonData);
         return jsonData;
 
     } catch (error) {
