@@ -1,4 +1,4 @@
-Overview of the client - radio station - https://www.dublab.com/schedule - prod output that is a representation of what is seen on the website - https://beanla.netlify.app/.netlify/functions/schedule
+The client is a radio station named Dublab. The work in this repo is productionalized on this page: https://www.dublab.com/schedule, and the backend of what is populated on the website was made through this netlify app - https://beanla.netlify.app/.netlify/functions/schedule
 
 - Goal is for the scheduling backend to be powered by google calendar api vs the wordpress system they have now. This code is meant to integrate with the calendar they produce and display events on this /schedule page
 - This public version will not have the tokens or credentials for security purposes, but the prod output is still viewable even though this repo will not function
