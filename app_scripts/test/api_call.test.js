@@ -1,5 +1,5 @@
 // npx mocha app_scripts/test/
-const { getCalendarEvents } = require('../util/api_call.js');
+const { getCalendarEvents } = require('../util/cached_api_call.js');
 const assert = require('assert');
 const moment = require('moment-timezone');
 
@@ -29,6 +29,7 @@ describe('api_call.js', function () {
         // Get today's date in Pacific Time (Los Angeles) and set it at the beginning of the day
         const todayDate = now.clone().startOf('day');
         const todayDateRoundedISO = todayDate.format('YYYY-MM-DDTHH:mm:ssZ');
+        const yesterdayDateRoundedISO = now.clone().startOf('day').add(-1, 'days').format('YYYY-MM-DDTHH:mm:ssZ');
 
         // Get the date 7 days ahead in Pacific Time (Los Angeles) and set it at the beginning of the day
         const weekAheadDate = now.clone().startOf('day').add(numDays, 'days');
@@ -37,7 +38,8 @@ describe('api_call.js', function () {
 
         console.log(
             todayDateRoundedISO + '\n',
-            weekAheadDateRoundedISO + '\n')
+            weekAheadDateRoundedISO + '\n',
+            yesterdayDateRoundedISO)
 
         // Assert that there should be exactly 7 days between these two dates. First create the date objects since these variables are stored as ISO strings
         const daysDiff = (new Date(weekAheadDateRoundedISO) - new Date(todayDateRoundedISO));
